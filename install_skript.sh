@@ -2,7 +2,7 @@
 
 echo "Minecraft Server installer Skript von C-onner -> https://c-onner.de"
 
-read -p "Möchtest du mit der Installation fortfahren? (ja/nein): " choice
+read -p "Möchtest du die Installation starten? (ja/nein): " choice
 case "$choice" in
   j|J|ja|Ja ) echo "Weiter geht's...";;
   * ) echo "Abbruch."; exit;;
@@ -12,8 +12,9 @@ java -version > /dev/null 2>&1
 if [ $? -eq 0 ]; then
   echo "Java ist bereits installiert."
 else
-  echo "Java ist nicht installiert."
+  echo "Java ist nicht installiert!"
   read -p "Welche Java-Version soll installiert werden? (11/17): " java_version
+  sudo apt update
   sudo apt install openjdk-$java_version-jdk-headless -y
 fi
 
@@ -30,15 +31,15 @@ case "$minecraft_version" in
   * ) echo "Ungültige Eingabe. Abbruch."; exit;;
 esac
 
-echo ".jar erfolgreich installiert."
+echo "Die Server .jar wurde erfolgreich installiert."
 
-read -p "Wie viel RAM soll der Server verwenden? (2/4/6/8/16 GB): " ram_amount
+read -p "Wie viel GB RAM soll der Server verwenden? (2/4/6/8/16 GB): " ram_amount
 case "$ram_amount" in
   2|4|6|8|16 ) ;;
   * ) echo "Ungültige Eingabe. Abbruch."; exit;;
 esac
 
-echo "screen -R minecraft server java -Xms${ram_amount}G -Xmx${ram_amount}G -jar paper.jar" > start.sh
+echo "screen -S minecraftserver java -Xms${ram_amount}G -Xmx${ram_amount}G -jar paper.jar" > start.sh
 sudo apt install screen -y
 chmod +x start.sh
 
